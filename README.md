@@ -51,7 +51,7 @@ EatsNow는 고객과 식당을 연결하는 배달 주문 서비스입니다.
 ⠀  
 
 ## 🏗️ 클래스 다이어그램
-![Image](https://github.com/user-attachments/assets/f706c0d2-cfeb-4a62-b741-736a3b600a47)
+![Image](https://github.com/user-attachments/assets/4a13e3ea-696f-4701-ae71-fe8dd28f7d9a)
 ⠀
 ---
 이 프로젝트는 고객이 쉽고 빠르게 음식을 주문할 수 있도록 설계되었습니다.  
