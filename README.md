@@ -11,6 +11,7 @@ EatsNow는 고객과 식당을 연결하는 배달 주문 서비스입니다.
 | IDE            | IntelliJ     |
 | Version Control | Git & GitHub |  
 
+  
 ## 📖 주요 기능
 ### 1️⃣ 사용자 로그인 (입출력 예외 처리 완료)
 - 일반 고객(`Customer`)과 VIP 고객(`VIPCustomer`, 업캐스팅 적용) 로그인 지원
