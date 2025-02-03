@@ -30,7 +30,9 @@ public class Main {
         List<Customization> r1Customizations = Arrays.asList(
                 new Customization("후렌치 후라이 스몰", 2300, "스낵"),
                 new Customization("후렌치 후라이 미디움", 2800, "스낵"),
-                new Customization("후렌치 후라이 라지", 3300, "스낵")
+                new Customization("후렌치 후라이 라지", 3300, "스낵"),
+                new Customization("콜라", 1200, "음료"),
+                new Customization("제로 콜라", 1500, "음료")
         );
         Menu r1Menu = new Menu("빅맥", 6300, "버거 단품", r1Customizations);
         r1MenuList.add(r1Menu);
