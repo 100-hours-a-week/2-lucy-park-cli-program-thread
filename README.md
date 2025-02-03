@@ -1,16 +1,16 @@
 # EatsNow 🍽️
 EatsNow는 고객과 식당을 연결하는 배달 주문 서비스입니다.  
 사용자는 식당을 조회하고 메뉴를 선택하며 배달 또는 포장 주문을 할 수 있습니다.
-[➡ EatsNow Repository](https://github.com/jieunyy/kbt_week1)
-⠀
+[➡ EatsNow Repository](https://github.com/jieunyy/kbt_week1)  
+
 ⠀
 ## 🛠️ Tech Stack
 | Category         | Technology   |
 |-----------------|-------------|
 | Language        | Java 21      |
 | IDE            | IntelliJ     |
-| Version Control | Git & GitHub |
-⠀
+| Version Control | Git & GitHub |  
+
 ## 📖 주요 기능
 ### 1️⃣ 사용자 로그인 (입출력 예외 처리 완료)
 - 일반 고객(`Customer`)과 VIP 고객(`VIPCustomer`, 업캐스팅 적용) 로그인 지원
@@ -44,8 +44,8 @@ EatsNow는 고객과 식당을 연결하는 배달 주문 서비스입니다.
   - VIP 고객(`VIPCustomer`)은 배달료 무료
   
   - 주문 완료 시 `OrderStatus` 변경 및 주문 내역 조회 가능
-⠀
-⠀
+ 
+
 ## 🏗️ 클래스 다이어그램
 ![Image](https://github.com/user-attachments/assets/f706c0d2-cfeb-4a62-b741-736a3b600a47)
 ⠀
