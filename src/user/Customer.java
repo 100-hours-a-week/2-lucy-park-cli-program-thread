@@ -267,7 +267,7 @@ public class Customer extends User{
 
         for(CartItem cartItem : cartItemList) {
             ///  깊은 복사로 업데이트 필요: 클래스가 다르기 때문에 불가능한가?
-            OrderItem orderItem = new OrderItem(cartItem.getMenuItem(), cartItem.getQuantity());
+            OrderItem orderItem = new OrderItem(cartItem);
             orderItemList.add(orderItem);
         }
 

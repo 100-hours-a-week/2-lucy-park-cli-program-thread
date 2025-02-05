@@ -13,6 +13,11 @@ public class MenuItem {
         this.itemPrice = itemPrice;
     }
 
+    public MenuItem(MenuItem menuItem) {
+        this.itemName = menuItem.getItemName();
+        this.itemPrice = menuItem.getItemPrice();
+    }
+
 
     // 메소드
     public String getItemName() {

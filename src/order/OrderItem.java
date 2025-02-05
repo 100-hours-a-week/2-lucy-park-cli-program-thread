@@ -1,5 +1,6 @@
 package order;
 
+import cart.CartItem;
 import restaurant.MenuItem;
 
 public class OrderItem {
@@ -10,9 +11,9 @@ public class OrderItem {
 
 
     // 생성자
-    public OrderItem(MenuItem menuItem, int quantity) {
-        this.menuItem = menuItem;
-        this.quantity = quantity;
+    public OrderItem(CartItem cartItem) {
+        this.menuItem = new MenuItem(cartItem.getMenuItem());
+        this.quantity = cartItem.getQuantity();
     }
 
 
