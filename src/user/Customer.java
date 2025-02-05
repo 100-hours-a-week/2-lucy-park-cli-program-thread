@@ -30,8 +30,8 @@ public class Customer extends User{
     // 메소드
     public Restaurant selectRestaurant(List<Restaurant> restaurants, String rName) {
         for(Restaurant restaurant : restaurants) {
-            if(rName.equals(restaurant.getrName())) {
-                System.out.printf("%s 식당이 선택되었습니다.%n", restaurant.getrName());
+            if(rName.equals(restaurant.getRestaurantName())) {
+                System.out.printf("%s 식당이 선택되었습니다.%n", restaurant.getRestaurantName());
                 return restaurant;
             }
         }
@@ -63,29 +63,12 @@ public class Customer extends User{
                 if (menu.getItemName().equals(selectedMenu)) {
                     confirmedMenu = menu;
                     System.out.printf("%s 메뉴가 선택되었습니다.%n", selectedMenu);
-
-                    int quantity = 0;
-                    System.out.println("수량을 선택해주세요.");
-                    while (true) {
-                        try {
-                            quantity = sc.nextInt();
-                            sc.nextLine();
-
-                            if (quantity == 0) {
-                                System.out.println("1개 이상 주문 가능합니다.");
-                                continue;
-                            }
-                            contimedQuantity = quantity;
-                            break;
-                        } catch (InputMismatchException e) {
-                            System.out.println("숫자를 입력해주세요.");
-                            sc.nextLine();
-                        }
-                    }
-
-                    System.out.printf("%s 메뉴가 %d개 선택되었습니다.%n", menu.getItemName(), quantity);
                 }
             }
+
+            contimedQuantity = selectQuantity(sc);
+
+            System.out.printf("%s 메뉴가 %d개 선택되었습니다.%n", confirmedMenu.getItemName(), contimedQuantity);
             if (confirmedMenu == null) {
                 System.out.println("존재하지 않는 메뉴입니다.");
             }
@@ -175,24 +158,8 @@ public class Customer extends User{
             }
 
             int sideQuantity = 0;
-            System.out.println("수량을 선택해주세요.");
-            while (true) {
-                try {
-                    sideQuantity = sc.nextInt();
-                    sc.nextLine();
+            sideQuantity = selectQuantity(sc);
 
-                    if (sideQuantity == 0) {
-                        System.out.println("1개 이상 주문 가능합니다.");
-                        sc.nextLine();
-                        continue;
-                    }
-
-                    break;
-                } catch (InputMismatchException e) {
-                    System.out.println("숫자를 입력해주세요.");
-                    sc.nextLine();
-                }
-            }
             System.out.printf("%s 메뉴가 %d개 선택되었습니다.%n", side, sideQuantity);
             customizationCartItem.setMenuItem(selectedCustomization);
             customizationCartItem.setQuantity(sideQuantity);
@@ -203,7 +170,7 @@ public class Customer extends User{
     // 리턴 타입 고려 필요
     public void setDeliveryOrder(Restaurant restaurant, Cart cart, OrderType orderType, Scanner sc) {
         // 최소 주문 금액 확인(배달)
-        int minOrderAmount = restaurant.getrMinOrderAmount();
+        int minOrderAmount = restaurant.getRestaurantMinOrderAmount();
         System.out.printf("최소 주문 금액: %d%n", minOrderAmount);
 
         int cartTotalPrice = cart.getTotalPrice();
@@ -248,6 +215,32 @@ public class Customer extends User{
         setOrder(restaurant, cart, orderType);
     }
 
+    public int selectQuantity(Scanner sc) {
+        int quantity;
+
+        System.out.println("수량을 선택해주세요.");
+        while (true) {
+            try {
+                quantity = sc.nextInt();
+                sc.nextLine();
+
+                if (quantity == 0) {
+                    System.out.println("1개 이상 주문 가능합니다.");
+                    sc.nextLine();
+                    continue;
+                }
+
+                if (quantity > 0) {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("숫자를 입력해주세요.");
+                sc.nextLine();
+            }
+        }
+        return quantity;
+    }
+
     public boolean isCustomizationNotNUll(CartItem customizationCartItem) {
         if (customizationCartItem != null) {
             return true;
@@ -270,7 +263,7 @@ public class Customer extends User{
             orderItemList.add(orderItem);
         }
 
-        int deliverFee = restaurant.getrDeliveryFee();
+        int deliverFee = restaurant.getRestaurantDeliveryFee();
 
         Order order = new Order(this, restaurant, orderItemList,
                                 orderType == 배달
@@ -281,7 +274,7 @@ public class Customer extends User{
         System.out.println("━━━━━━━━━━━⊱주문 내역 확인⊰━━━━━━━━━━━");
         System.out.printf(":::::: 주문 번호   %d%n", order.getOrderId());
         System.out.printf(":::::: 주문 고객   %s%n", order.getCustomer().getName());
-        System.out.printf(":::::: 식당       %s%n", order.getRestaurant().getrName());
+        System.out.printf(":::::: 식당       %s%n", order.getRestaurant().getRestaurantName());
         System.out.printf(":::::: 주문 메뉴   %n");
         orderItemList = order.getOrderItemList();
         for(OrderItem orderItem : orderItemList) {
@@ -294,8 +287,8 @@ public class Customer extends User{
 
         int orderTime =
                 orderType == 배달
-                ? order.getRestaurant().getrDeliveryTime()
-                : order.getRestaurant().getrTakeoutTime();
+                ? order.getRestaurant().getRestaurantDeliveryTime()
+                : order.getRestaurant().getRestaurantTakeoutTime();
         int hour = orderTime / 60;
         int minutes = orderTime % 60;
         System.out.printf(":::::: 소요 시간  %s %d분%n", hour > 0 ? " " + hour + "시간" : "", minutes);
@@ -306,6 +299,6 @@ public class Customer extends User{
     }
 
     public int getDeliveryFee(Restaurant restaurant) {
-        return restaurant.getrDeliveryFee();
+        return restaurant.getRestaurantDeliveryFee();
     }
 }

@@ -5,28 +5,28 @@ import java.util.List;
 public class Restaurant {
 
     // 필드
-    private String rName;         // 식당 이름
-    private String rLocation;     // 식당 위치
-    private String rCategory;     // 식당 종류(양식, 한식 등)
-    private double rRate;         // 식당 평점
-    private int rDeliveryFee;     // 배달료
-    private int rMinOrderAmount;  // 최소 주문 금액
-    private int rDeliveryTime;    // 배달 시간(배달 선택 시)
-    private int rTakeoutTime;
+    private String restaurantName;         // 식당 이름
+    private String restaurantLocation;     // 식당 위치
+    private String restaurantCategory;     // 식당 종류(양식, 한식 등)
+    private double restaurantRate;         // 식당 평점
+    private int restaurantDeliveryFee;     // 배달료
+    private int restaurantMinOrderAmount;  // 최소 주문 금액
+    private int restaurantDeliveryTime;    // 배달 시간(배달 선택 시)
+    private int restaurantTakeoutTime;     // 포장 시간
     private List<Menu> menuList;  // 식당 메뉴
 
 
     // 생성자
-    public Restaurant(String rName, String rLocation, String rCategory, double rRate,
-               int rDeliveryFee, int rMinOrderAmount, int rDeliveryTime, int rTakeoutTime) {
-        this.rName = rName;
-        this.rLocation = rLocation;
-        this.rCategory = rCategory;
-        this.rRate = rRate;
-        this.rDeliveryFee = rDeliveryFee;
-        this.rMinOrderAmount = rMinOrderAmount;
-        this.rDeliveryTime = rDeliveryTime;
-        this.rTakeoutTime = rTakeoutTime;
+    public Restaurant(String restaurantName, String restaurantLocation, String restaurantCategory, double restaurantRate,
+               int restaurantDeliveryFee, int restaurantMinOrderAmount, int restaurantDeliveryTime, int restaurantTakeoutTime) {
+        this.restaurantName = restaurantName;
+        this.restaurantLocation = restaurantLocation;
+        this.restaurantCategory = restaurantCategory;
+        this.restaurantRate = restaurantRate;
+        this.restaurantDeliveryFee = restaurantDeliveryFee;
+        this.restaurantMinOrderAmount = restaurantMinOrderAmount;
+        this.restaurantDeliveryTime = restaurantDeliveryTime;
+        this.restaurantTakeoutTime = restaurantTakeoutTime;
     }
 
 
@@ -34,69 +34,75 @@ public class Restaurant {
     public void setMenus(List<Menu> menuList) {
         this.menuList = menuList;
     }
-    public String getrName() {
-        return rName;
+
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
-    public String getrLocation() {
-        return rLocation;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
-    public String getrCategory() {
-        return rCategory;
+    public String getRestaurantLocation() {
+        return restaurantLocation;
     }
 
-    public double getrRate() {
-        return rRate;
+    public void setRestaurantLocation(String restaurantLocation) {
+        this.restaurantLocation = restaurantLocation;
     }
 
-    public int getrDeliveryFee() {
-        return rDeliveryFee;
+    public String getRestaurantCategory() {
+        return restaurantCategory;
     }
 
-    public int getrMinOrderAmount() {
-        return rMinOrderAmount;
+    public void setRestaurantCategory(String restaurantCategory) {
+        this.restaurantCategory = restaurantCategory;
     }
 
-    public int getrDeliveryTime() {
-        return rDeliveryTime;
+    public double getRestaurantRate() {
+        return restaurantRate;
     }
 
-    public int getrTakeoutTime() {
-        return rTakeoutTime;
+    public void setRestaurantRate(double restaurantRate) {
+        this.restaurantRate = restaurantRate;
+    }
+
+    public int getRestaurantDeliveryFee() {
+        return restaurantDeliveryFee;
+    }
+
+    public void setRestaurantDeliveryFee(int restaurantDeliveryFee) {
+        this.restaurantDeliveryFee = restaurantDeliveryFee;
+    }
+
+    public int getRestaurantMinOrderAmount() {
+        return restaurantMinOrderAmount;
+    }
+
+    public void setRestaurantMinOrderAmount(int restaurantMinOrderAmount) {
+        this.restaurantMinOrderAmount = restaurantMinOrderAmount;
+    }
+
+    public int getRestaurantDeliveryTime() {
+        return restaurantDeliveryTime;
+    }
+
+    public void setRestaurantDeliveryTime(int restaurantDeliveryTime) {
+        this.restaurantDeliveryTime = restaurantDeliveryTime;
+    }
+
+    public int getRestaurantTakeoutTime() {
+        return restaurantTakeoutTime;
+    }
+
+    public void setRestaurantTakeoutTime(int restaurantTakeoutTime) {
+        this.restaurantTakeoutTime = restaurantTakeoutTime;
     }
 
     public List<Menu> getMenuList() {
         return menuList;
     }
 
-    public void setrName(String rName) {
-        this.rName = rName;
-    }
-
-    public void setrLocation(String rLocation) {
-        this.rLocation = rLocation;
-    }
-
-    public void setrCategory(String rCategory) {
-        this.rCategory = rCategory;
-    }
-
-    public void setrRate(double rRate) {
-        this.rRate = rRate;
-    }
-
-    public void setrDeliveryFee(int rDeliveryFee) {
-        this.rDeliveryFee = rDeliveryFee;
-    }
-
-    public void setrMinOrderAmount(int rMinOrderAmount) {
-        this.rMinOrderAmount = rMinOrderAmount;
-    }
-
-    public void setrDeliveryTime(int rDeliveryTime) {
-        this.rDeliveryTime = rDeliveryTime;
-    }
 
     public void setMenuList(List<Menu> menuList) {
         this.menuList = menuList;

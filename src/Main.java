@@ -126,11 +126,11 @@ public class Main {
 
             for (Restaurant res : restaurantList) {
                 System.out.println("━━━━━━━━━━━━━━━━━⊱⊰━━━━━━━━━━━━━━━━");
-                System.out.printf(".•☀ %s%n ☀•.", res.getrName());
-                System.out.printf(".•☀ 평점 %s%n", res.getrRate());
-                System.out.printf(".•☀ %s분 소요%n", res.getrDeliveryTime());
-                System.out.printf(".•☀ 배달팁 %s%n", res.getrDeliveryFee());
-                System.out.printf(".•☀ 최소 주문 %s%n", res.getrMinOrderAmount());
+                System.out.printf(".•☀ %s%n ☀•.", res.getRestaurantName());
+                System.out.printf(".•☀ 평점 %s%n", res.getRestaurantRate());
+                System.out.printf(".•☀ %s분 소요%n", res.getRestaurantDeliveryTime());
+                System.out.printf(".•☀ 배달팁 %s%n", res.getRestaurantDeliveryFee());
+                System.out.printf(".•☀ 최소 주문 %s%n", res.getRestaurantMinOrderAmount());
             }
             System.out.println("━━━━━━━━━━━━━━━━⊱⋆⊰━━━━━━━━━━━━━━━━");
 
