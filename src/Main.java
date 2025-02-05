@@ -6,10 +6,7 @@ import restaurant.Restaurant;
 import user.Customer;
 import user.VIPCustomer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static order.OrderType.배달;
 import static order.OrderType.포장;
@@ -91,17 +88,21 @@ public class Main {
 
         String account = "";
         while(true) {
-            System.out.println("로그인할 계정을 선택해주세요: 일반     VIP");
-            String accountReply = sc.nextLine().trim();
+            try {
+                System.out.println("로그인할 계정을 선택해주세요: 일반     VIP");
+                String accountReply = sc.nextLine().trim();
 
-            if (accountReply.equals("일반")) {
-                account = "일반";
-                break;
-            } else if (accountReply.equalsIgnoreCase("VIP")) {
-                account = "VIP";
-                break;
-            } else {
-                System.out.println("다시 선택해주세요.");
+                if (accountReply.equals("일반")) {
+                    account = "일반";
+                    break;
+                } else if (accountReply.equalsIgnoreCase("VIP")) {
+                    account = "VIP";
+                    break;
+                } else {
+                    System.out.println("다시 선택해주세요.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("문자만 입력해주세요.");
             }
         }
 
@@ -147,7 +148,6 @@ public class Main {
             }
 
             /// /// 흐름을 직관적으로 변경할 필요 있음.
-            String reply = null;
             while (cart == null) {
                 System.out.println("메뉴를 선택해주세요. (혹은 '뒤로 가기'를 입력하세요.)");
                 cart = customer.selectMenu(restaurant);

@@ -52,18 +52,22 @@ public class Customer extends User{
             }
             System.out.println("━━━━━━━━━━━━━━━━⊱⋆⊰━━━━━━━━━━━━━━━━");
 
-            String selectedMenu = sc.nextLine().trim();
+            try {
+                String selectedMenu = sc.nextLine().trim();
 
-            if (selectedMenu.equals("뒤로 가기")) {
-                System.out.println("뒤로 가기를 선택하셨습니다. 식당 조회 화면으로 되돌아갑니다.");
-                return null;
-            }
-
-            for (Menu menu : menuList) {
-                if (menu.getItemName().equals(selectedMenu)) {
-                    confirmedMenu = menu;
-                    System.out.printf("%s 메뉴가 선택되었습니다.%n", selectedMenu);
+                if (selectedMenu.equals("뒤로 가기")) {
+                    System.out.println("뒤로 가기를 선택하셨습니다. 식당 조회 화면으로 되돌아갑니다.");
+                    return null;
                 }
+
+                for (Menu menu : menuList) {
+                    if (menu.getItemName().equals(selectedMenu)) {
+                        confirmedMenu = menu;
+                        System.out.printf("%s 메뉴가 선택되었습니다.%n", selectedMenu);
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("문자만 입력해주세요.");
             }
 
             contimedQuantity = selectQuantity(sc);
@@ -141,20 +145,24 @@ public class Customer extends User{
             String side = "";
             System.out.println("사이드 메뉴를 선택해주세요.");
             while(true) {
-                side = sc.nextLine().trim();
+                try {
+                    side = sc.nextLine().trim();
 
-                for (Customization customization : customizations) {
-                    if (customization.getItemName().equals(side)) {
-                        selectedCustomization = customization;
-                        System.out.printf("%s 사이드 메뉴가 선택되었습니다.%n", side);
+                    for (Customization customization : customizations) {
+                        if (customization.getItemName().equals(side)) {
+                            selectedCustomization = customization;
+                            System.out.printf("%s 사이드 메뉴가 선택되었습니다.%n", side);
+                            break;
+                        }
+                    }
+                    if (selectedCustomization != null) {
                         break;
                     }
-                }
-                if (selectedCustomization != null) {
-                    break;
-                }
 
-                System.out.println("해당 사이드 메뉴가 없습니다. 다시 선택해주세요.");
+                    System.out.println("해당 사이드 메뉴가 없습니다. 다시 선택해주세요.");
+                } catch (InputMismatchException e) {
+                    System.out.println("문자만 입력해주세요.");
+                }
             }
 
             int sideQuantity = 0;
