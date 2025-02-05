@@ -11,7 +11,8 @@ public class Cart {
 
     // 생성자
     public Cart(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
+
+        this.cartItemList = (cartItemList != null) ? cartItemList : new ArrayList<>();
     }
 
     // 메소드
