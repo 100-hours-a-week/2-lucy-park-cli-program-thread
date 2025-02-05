@@ -9,6 +9,7 @@ public class User {
     private long id;                                                          // 유저 아이디
     private String name;                                                      // 유저 이름
     private UserStatus userStatus;
+    private String userLocation = "서울시 용산구";
 
 
     // 생성자
@@ -26,5 +27,9 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getUserLocation() {
+        return userLocation;
     }
 }

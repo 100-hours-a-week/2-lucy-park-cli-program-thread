@@ -1,5 +1,8 @@
 import cart.Cart;
 import cart.CartItem;
+import delivery.DeliveryThread;
+import order.Order;
+import order.OrderStatus;
 import restaurant.Customization;
 import restaurant.Menu;
 import restaurant.Restaurant;
@@ -164,6 +167,7 @@ public class Main {
             }
         }
 
+        Order order = null;
         if(cart != null) {
             System.out.println("장바구니를 확인합니다.");
             System.out.println("━━━━━━━━━━━━━━⊱장바구니⊰━━━━━━━━━━━━━━");
@@ -183,10 +187,10 @@ public class Main {
 
                         // 배달 주문
                         if (orderType.equals("배달")) {
-                            customer.setDeliveryOrder(restaurant, cart, 배달, sc);
+                            order = customer.setDeliveryOrder(restaurant, cart, 배달, sc);
                             break;
                         } else if (orderType.equals("포장")) {
-                            customer.setTakeoutOrder(restaurant, cart, 포장);
+                            order = customer.setTakeoutOrder(restaurant, cart, 포장);
                             break;
                         } else {
                             System.out.println("잘못된 응답입니다. 다시 선택해주세요.");
@@ -198,5 +202,23 @@ public class Main {
                 break;
             }
         }
+
+
+
+        order.updateOrderStatus();
+        OrderStatus orderStatus = order.getOrderStatus();
+        System.out.printf("[%s]  %s 식당에서 주문이 접수되었습니다.%n", orderStatus.toString(), order.getRestaurant().getRestaurantName());
+
+        order.updateOrderStatus();
+        orderStatus = order.getOrderStatus();
+        System.out.printf("[%s]  %s 식당에서 조리가 완료되었습니다.%n", orderStatus.toString(), order.getRestaurant().getRestaurantName());
+
+
+        if(order.getOrderType() == 배달) {
+            Thread deliveryThread = new Thread(new DeliveryThread(order));
+            deliveryThread.start();
+        }
+
+        System.out.println("오늘도 이용해주셔서 감사합니다.");
     }
 }

@@ -176,7 +176,7 @@ public class Customer extends User{
     }
 
     // 리턴 타입 고려 필요
-    public void setDeliveryOrder(Restaurant restaurant, Cart cart, OrderType orderType, Scanner sc) {
+    public Order setDeliveryOrder(Restaurant restaurant, Cart cart, OrderType orderType, Scanner sc) {
         // 최소 주문 금액 확인(배달)
         int minOrderAmount = restaurant.getRestaurantMinOrderAmount();
         System.out.printf("최소 주문 금액: %d%n", minOrderAmount);
@@ -202,7 +202,7 @@ public class Customer extends User{
                 }
             } else if (reply.equals("아니오")) {
                 System.out.println("주문을 취소하고 처음으로 돌아갑니다.");
-                return;
+                return null;
             } else {
                 System.out.println("올바른 입력이 아닙니다. '네' 또는 '아니오'를 입력해주세요.");
             }
@@ -220,7 +220,7 @@ public class Customer extends User{
         }
 
         // 주문
-        setOrder(restaurant, cart, orderType);
+        return setOrder(restaurant, cart, orderType);
     }
 
     public int selectQuantity(Scanner sc) {
@@ -256,17 +256,17 @@ public class Customer extends User{
         return false;
     }
 
-    public void setTakeoutOrder(Restaurant restaurant, Cart cart, OrderType orderType) {
-        setOrder(restaurant, cart, orderType);
+    public Order setTakeoutOrder(Restaurant restaurant, Cart cart, OrderType orderType) {
+        return setOrder(restaurant, cart, orderType);
     }
 
-    public void setOrder(Restaurant restaurant, Cart cart, OrderType orderType) {
-        /// 주문 아이템에 카트 깊은 복사 -> 같은 클래스여야 가능한가?
+    public Order setOrder(Restaurant restaurant, Cart cart, OrderType orderType) {
+
         List<CartItem> cartItemList = cart.getCartItemList();
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for(CartItem cartItem : cartItemList) {
-            ///  깊은 복사로 업데이트 필요: 클래스가 다르기 때문에 불가능한가?
+            ///  깊은 복사로 업데이트 완료
             OrderItem orderItem = new OrderItem(cartItem);
             orderItemList.add(orderItem);
         }
@@ -304,6 +304,8 @@ public class Customer extends User{
         System.out.println("이용해 주셔서 감사합니다.");
         System.out.println("EatsNow!");
         System.out.println("━━━━━━━━━━━━━━━━⊱⋆⊰━━━━━━━━━━━━━━━━");
+
+        return order;
     }
 
     public int getDeliveryFee(Restaurant restaurant) {

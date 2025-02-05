@@ -35,7 +35,7 @@ public class Order {
         this.orderType = orderType;
 
         // 상태만 업데이트
-        this.updateOrderStatus(orderType);
+        this.updateOrderStatus();
 
         // 주문 시각
         this.orderTimeStamp = LocalDateTime.now();
@@ -43,7 +43,7 @@ public class Order {
 
 
     // 메소드
-    public void updateOrderStatus(OrderType orderType) {
+    public void updateOrderStatus() {
         // enum 활용해서 추가 구현 필요
         OrderStatus nextStatus = orderStatus.nextOrderStatus(orderType, orderStatus);
         this.orderStatus = nextStatus;
