@@ -2,13 +2,10 @@ package delivery;
 
 import order.Order;
 import order.OrderStatus;
-import order.OrderType;
 import restaurant.Restaurant;
 import user.Customer;
 
-import java.time.LocalDateTime;
-
-public class DeliveryThread implements Runnable{
+public class DeliveryRunnable implements Runnable{
 
     // 필드
     private long orderId;                  // 주문 아이디
@@ -22,7 +19,7 @@ public class DeliveryThread implements Runnable{
 
 
     // 생성자
-    public DeliveryThread(Order order) {
+    public DeliveryRunnable(Order order) {
         this.orderId = order.getOrderId();
         this.restaurant = order.getRestaurant();
         this.customer = order.getCustomer();

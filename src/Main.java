@@ -1,6 +1,6 @@
 import cart.Cart;
 import cart.CartItem;
-import delivery.DeliveryThread;
+import delivery.DeliveryRunnable;
 import order.Order;
 import order.OrderStatus;
 import restaurant.Customization;
@@ -204,7 +204,7 @@ public class Main {
         }
 
 
-
+        // 얘네도 Thread화 필요
         order.updateOrderStatus();
         OrderStatus orderStatus = order.getOrderStatus();
         System.out.printf("[%s]  %s 식당에서 주문이 접수되었습니다.%n", orderStatus.toString(), order.getRestaurant().getRestaurantName());
@@ -215,7 +215,7 @@ public class Main {
 
 
         if(order.getOrderType() == 배달) {
-            Thread deliveryThread = new Thread(new DeliveryThread(order));
+            Thread deliveryThread = new Thread(new DeliveryRunnable(order));
             deliveryThread.start();
         }
 
