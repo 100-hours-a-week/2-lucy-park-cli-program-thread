@@ -1,23 +1,25 @@
 package restaurant;
 
+import location.Location;
+
 import java.util.List;
 
 public class Restaurant {
 
     // 필드
     private String restaurantName;         // 식당 이름
-    private String restaurantLocation;     // 식당 위치
+    private Location restaurantLocation;     // 식당 위치
     private String restaurantCategory;     // 식당 종류(양식, 한식 등)
     private double restaurantRate;         // 식당 평점
     private int restaurantDeliveryFee;     // 배달료
     private int restaurantMinOrderAmount;  // 최소 주문 금액
     private int restaurantDeliveryTime;    // 배달 시간(배달 선택 시)
     private int restaurantTakeoutTime;     // 포장 시간
-    private List<Menu> menuList;  // 식당 메뉴
+    private List<Menu> menuList;           // 식당 메뉴
 
 
     // 생성자
-    public Restaurant(String restaurantName, String restaurantLocation, String restaurantCategory, double restaurantRate,
+    public Restaurant(String restaurantName, Location restaurantLocation, String restaurantCategory, double restaurantRate,
                int restaurantDeliveryFee, int restaurantMinOrderAmount, int restaurantDeliveryTime, int restaurantTakeoutTime) {
         this.restaurantName = restaurantName;
         this.restaurantLocation = restaurantLocation;
@@ -36,6 +38,7 @@ public class Restaurant {
     }
 
     public String getRestaurantName() {
+
         return restaurantName;
     }
 
@@ -47,7 +50,7 @@ public class Restaurant {
         return restaurantLocation;
     }
 
-    public void setRestaurantLocation(String restaurantLocation) {
+    public void setRestaurantLocation(Location restaurantLocation) {
         this.restaurantLocation = restaurantLocation;
     }
 

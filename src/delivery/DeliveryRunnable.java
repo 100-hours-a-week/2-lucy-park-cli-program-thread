@@ -1,5 +1,6 @@
 package delivery;
 
+import location.Location;
 import order.Order;
 import order.OrderStatus;
 import restaurant.Restaurant;
@@ -14,7 +15,8 @@ public class DeliveryRunnable implements Runnable{
     private OrderStatus orderStatus;       // 주문 상태
     private String orderTimeStamp;         // 최초 주문 시각
     private int deliveryTime;              // 총 배달 소요 시간
-    private int deliveryDistance = 8;      // 임의 지정 거리
+    private Location userLocation;           // 배달 주소
+    private int deliveryDistance = 8;      // 배달 거리(임의 지정)
     private Order order;
 
 
@@ -23,6 +25,7 @@ public class DeliveryRunnable implements Runnable{
         this.orderId = order.getOrderId();
         this.restaurant = order.getRestaurant();
         this.customer = order.getCustomer();
+        this.userLocation = order.getCustomer().getUserLocation();
         this.orderStatus = order.getOrderStatus();
         this.orderTimeStamp = order.getOrderTimeStamp();
         this.deliveryTime = restaurant.getRestaurantDeliveryTime();
@@ -36,15 +39,15 @@ public class DeliveryRunnable implements Runnable{
     public void run() {
         order.updateOrderStatus();
         orderStatus = order.getOrderStatus();
-        System.out.printf("[%s]:  라이더 님이 출발했어요! 접수번호: %d%n", orderStatus, orderId);
-        System.out.printf("           %s에서 %s님이 계신 곳으로 배송 중입니다!%n", restaurant.getRestaurantLocation(), customer.getName());
 
         try {
             while(deliveryDistance > -1) {
-                Thread.sleep(2000);
-                deliveryDistance -= 2;
 
                 switch (deliveryDistance) {
+                    case 8:
+                        System.out.printf("[%s]:  라이더 님이 출발했어요! 접수번호: %d%n", orderStatus, orderId);
+                        System.out.printf("           %s에서 %s님이 계신 곳으로 배송 중입니다!%n", restaurant.getRestaurantLocation(), customer.getName());
+                        break;
                     case 6:
                         System.out.println("           주변 배달을 함께 처리하고 있어요!");
                         break;
@@ -58,15 +61,19 @@ public class DeliveryRunnable implements Runnable{
                     case 0:
                         order.updateOrderStatus();
                         orderStatus = order.getOrderStatus();
-                        System.out.printf("[%s]   라이더 님이 주문하신 음식을 문 앞에 전달하셨습니다.%n", orderStatus);
+                        System.out.printf("[%s]   주문하신 음식이 문 앞에 전달되었어요.%n", orderStatus);
                         System.out.println("           음식을 수령해주세요!");
+                        System.out.println("감사합니다. EatsNow!");
+                        System.out.println("━━━━━━━━━━━━━━━━━⊱⊰━━━━━━━━━━━━━━━━");
                         break;
                 }
+                deliveryDistance -= 2;
+                Thread.sleep(2000);
             }
         } catch (InterruptedException e) {
-            System.out.println("❗ 배달이 취소되었습니다.");
+            System.out.println("[ERROR] 배달이 취소되었습니다.");
         } catch (Exception e) {
-            System.out.println("오류가 발생했습니다: "+e);
+            System.out.println("오류가 발생했습니다: " + e);
         }
     }
 }

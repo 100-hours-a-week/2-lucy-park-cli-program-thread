@@ -1,5 +1,8 @@
 package user;
 
+import location.Location;
+
+import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class User {
@@ -9,7 +12,7 @@ public class User {
     private long id;                                                          // 유저 아이디
     private String name;                                                      // 유저 이름
     private UserStatus userStatus;
-    private String userLocation = "서울시 용산구";
+    private Location location = new Location(new BigDecimal(37.5665), new BigDecimal(126.9780));
 
 
     // 생성자
@@ -29,7 +32,7 @@ public class User {
         return name;
     }
 
-    public String getUserLocation() {
+    public Location getUserLocation() {
         return userLocation;
     }
 }

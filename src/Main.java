@@ -1,6 +1,8 @@
 import cart.Cart;
 import cart.CartItem;
 import delivery.DeliveryRunnable;
+import delivery.PreparingRunnable;
+import location.Location;
 import order.Order;
 import order.OrderStatus;
 import restaurant.Customization;
@@ -9,6 +11,7 @@ import restaurant.Restaurant;
 import user.Customer;
 import user.VIPCustomer;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static order.OrderType.배달;
@@ -22,8 +25,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         /// 식당1
-        Restaurant r1 = new Restaurant("맥도날드", "서울시 용산구", "패스트푸트",
-                                        4.8, 3000, 12000, 50, 20);
+        Restaurant r1 = new Restaurant("맥도날드", new Location(new BigDecimal(37.5299), new BigDecimal(126.9644)),
+                                        "패스트푸트", 4.8, 3000,
+                                        12000, 50, 20);
         List<Menu> r1MenuList = new ArrayList<>();
 
         // 사이드 메뉴 존재하는 메뉴
@@ -54,8 +58,9 @@ public class Main {
 
 
         ///  식당2
-        Restaurant r2 = new Restaurant("동대문 엽기떡볶이", "서울시 용산구", "분식",
-                4.5, 4000, 15000, 70, 15);
+        Restaurant r2 = new Restaurant("동대문 엽기떡볶이", new Location(new BigDecimal(37.5230), new BigDecimal(126.9803)),
+                                        "분식", 4.5, 4000,
+                                        15000, 70, 15);
 
         // 사이드 메뉴 없는 메뉴1
         List<Customization> r2Customizations = new ArrayList<>();
@@ -203,22 +208,22 @@ public class Main {
             }
         }
 
+        boolean isPrepared = false;
 
-        // 얘네도 Thread화 필요
-        order.updateOrderStatus();
-        OrderStatus orderStatus = order.getOrderStatus();
-        System.out.printf("[%s]  %s 식당에서 주문이 접수되었습니다.%n", orderStatus.toString(), order.getRestaurant().getRestaurantName());
+        Thread preparingThread = new Thread(new PreparingRunnable(order));
+        preparingThread.start();
 
-        order.updateOrderStatus();
-        orderStatus = order.getOrderStatus();
-        System.out.printf("[%s]  %s 식당에서 조리가 완료되었습니다.%n", orderStatus.toString(), order.getRestaurant().getRestaurantName());
+        try {
+            // 조리 완료 기다림
+            preparingThread.join();
+            isPrepared = true;
+        } catch (InterruptedException e) {
+            System.out.println("[ERROR] 주문이 취소되었습니다.");
+        }
 
-
-        if(order.getOrderType() == 배달) {
+        if(isPrepared && order.getOrderType() == 배달) {
             Thread deliveryThread = new Thread(new DeliveryRunnable(order));
             deliveryThread.start();
         }
-
-        System.out.println("오늘도 이용해주셔서 감사합니다.");
     }
 }
