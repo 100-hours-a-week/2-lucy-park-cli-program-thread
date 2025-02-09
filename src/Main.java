@@ -230,7 +230,7 @@ public class Main {
                 Cart newCart = customer.selectMenu(restaurant);
                 if (newCart != null && newCart.getCartItemList() != null) {
                     cart.getCartItemList().addAll(newCart.getCartItemList());
-                    System.out.println("[알림] 장바구니에 메뉴가 추가되었습니다.");
+                    System.out.println("장바구니에 메뉴가 추가되었습니다.");
                 } else {
 
                     System.out.println("추가 메뉴 선택이 취소되었습니다.");
@@ -238,7 +238,7 @@ public class Main {
             }
 
             else if (orderReply.equalsIgnoreCase("뒤로 가기")) {
-                System.out.println("[알림] 주문을 종료하고 메인 화면으로 돌아갑니다.");
+                System.out.println("주문을 종료하고 메인 화면으로 돌아갑니다.");
                 break;
             }
 
