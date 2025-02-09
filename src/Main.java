@@ -96,12 +96,6 @@ public class Main {
 
         RestaurantListManager restaurantListManager = new RestaurantListManager(restaurantList);
 
-        runApplication(restaurantListManager);
-    }
-
-    public static void runApplication(RestaurantListManager restaurantListManager) {
-
-        List<Restaurant> restaurantList = restaurantListManager.getRestaurantList();
         Scanner sc = new Scanner(System.in);
 
         // 로그인
@@ -136,9 +130,17 @@ public class Main {
             customer = new VIPCustomer(accountName, VIP);
         }
 
+        runApplication(customer, restaurantListManager);
+    }
+
+    public static void runApplication(Customer customer, RestaurantListManager restaurantListManager) {
+
+        List<Restaurant> restaurantList = restaurantListManager.getRestaurantList();
+        Scanner sc = new Scanner(System.in);
+
 
         // 서비스
-        System.out.printf("안녕하세요, %s님.%n", accountName);
+        System.out.printf("안녕하세요, %s님.%n", customer.getName());
         System.out.println("환영합니다. EatsNow!");
 
         Restaurant restaurant = null;
@@ -175,7 +177,7 @@ public class Main {
 
                 if (cart == null) {
                     System.out.println("식당 조회 화면으로 되돌아 갑니다.");
-                    runApplication(restaurantListManager);
+                    runApplication(customer, restaurantListManager);
                 }
 
                 break;
@@ -238,7 +240,7 @@ public class Main {
             }
 
             else if (orderReply.equalsIgnoreCase("뒤로 가기")) {
-                System.out.println("주문을 종료하고 메인 화면으로 돌아갑니다.");
+                System.out.println("[알림] 주문을 종료하고 메인 화면으로 돌아갑니다.");
                 break;
             }
 
