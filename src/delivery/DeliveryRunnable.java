@@ -18,9 +18,6 @@ public class DeliveryRunnable implements Runnable{
     private Restaurant restaurant;          // 식당
     private Customer customer;              // 고객
     private OrderStatus orderStatus;        // 주문 상태
-    private String orderTimeStamp;          // 최초 주문 시각
-    private int deliveryTime;               // 총 배달 소요 시간
-    private Location userLocation;          // 배달 주소
     private int remainingDistance = 0;
 
     // 생성자
@@ -29,10 +26,7 @@ public class DeliveryRunnable implements Runnable{
         this.orderId = order.getOrderId();
         this.restaurant = order.getRestaurant();
         this.customer = order.getCustomer();
-        this.userLocation = order.getCustomer().getUserLocation();
         this.orderStatus = order.getOrderStatus();
-        this.orderTimeStamp = order.getOrderTimeStamp();
-        this.deliveryTime = restaurant.getRestaurantDeliveryTime();
         this.order = order;
     }
 
@@ -46,12 +40,13 @@ public class DeliveryRunnable implements Runnable{
         orderStatus = order.getOrderStatus();
 
         try {
-            while(remainingDistance > -1) {
+            while(true) {
                 remainingDistance = remainingDistanceQueue.take();
+
                 switch (remainingDistance) {
                     case 8:
                         System.out.printf("[%s]:  라이더 님이 출발했어요! 접수번호: %d%n", orderStatus, orderId);
-                        System.out.printf("           %s에서 %s님이 계신 곳으로 배송 중입니다!%n", restaurant.getRestaurantLocation(), customer.getName());
+                        System.out.printf("           %s에서 %s님이 계신 곳으로 배송 중입니다!%n", restaurant.getRestaurantName(), customer.getName());
                         break;
                     case 6:
                         System.out.println("           주변 배달을 함께 처리하고 있어요!");
@@ -71,6 +66,10 @@ public class DeliveryRunnable implements Runnable{
                         System.out.println("감사합니다. EatsNow!");
                         System.out.println("━━━━━━━━━━━━━━━━━⊱⊰━━━━━━━━━━━━━━━━");
                         break;
+                }
+
+                if (remainingDistance == 0) {
+                    break;
                 }
             }
         } catch (NullPointerException e) {
