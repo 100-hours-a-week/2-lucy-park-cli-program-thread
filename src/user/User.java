@@ -12,7 +12,7 @@ public class User {
     private long id;                                                          // 유저 아이디
     private String name;                                                      // 유저 이름
     private UserStatus userStatus;
-    private Location location = new Location(new BigDecimal(37.5665), new BigDecimal(126.9780));
+    private Location location = new Location(new BigDecimal("37.5665"), new BigDecimal("126.9780"));
 
 
     // 생성자
@@ -33,6 +33,6 @@ public class User {
     }
 
     public Location getUserLocation() {
-        return userLocation;
+        return location;
     }
 }

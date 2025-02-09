@@ -46,7 +46,7 @@ public class Restaurant {
         this.restaurantName = restaurantName;
     }
 
-    public String getRestaurantLocation() {
+    public Location getRestaurantLocation() {
         return restaurantLocation;
     }
 

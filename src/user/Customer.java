@@ -66,17 +66,16 @@ public class Customer extends User{
                         System.out.printf("%s 메뉴가 선택되었습니다.%n", selectedMenu);
                     }
                 }
+                if (confirmedMenu == null) {
+                    System.out.println("존재하지 않는 메뉴입니다.");
+                }
             } catch (InputMismatchException e) {
                 System.out.println("문자만 입력해주세요.");
             }
-
-            contimedQuantity = selectQuantity(sc);
-
-            System.out.printf("%s 메뉴가 %d개 선택되었습니다.%n", confirmedMenu.getItemName(), contimedQuantity);
-            if (confirmedMenu == null) {
-                System.out.println("존재하지 않는 메뉴입니다.");
-            }
         }
+        contimedQuantity = selectQuantity(sc);
+
+        System.out.printf("%s 메뉴가 %d개 선택되었습니다.%n", confirmedMenu.getItemName(), contimedQuantity);
 
         CartItem menuCartItem = null;
         menuCartItem = new CartItem(confirmedMenu, contimedQuantity);
@@ -155,11 +154,12 @@ public class Customer extends User{
                             break;
                         }
                     }
-                    if (selectedCustomization != null) {
+
+                    if (selectedCustomization == null) {
+                        System.out.println("해당 사이드 메뉴가 없습니다. 다시 선택해주세요.");
+                    } else {
                         break;
                     }
-
-                    System.out.println("해당 사이드 메뉴가 없습니다. 다시 선택해주세요.");
                 } catch (InputMismatchException e) {
                     System.out.println("문자만 입력해주세요.");
                 }

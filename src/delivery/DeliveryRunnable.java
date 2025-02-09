@@ -6,22 +6,26 @@ import order.OrderStatus;
 import restaurant.Restaurant;
 import user.Customer;
 
+import java.math.BigDecimal;
+import java.util.concurrent.BlockingQueue;
+
 public class DeliveryRunnable implements Runnable{
 
     // 필드
-    private long orderId;                  // 주문 아이디
-    private Restaurant restaurant;         // 식당
-    private Customer customer;             // 고객
-    private OrderStatus orderStatus;       // 주문 상태
-    private String orderTimeStamp;         // 최초 주문 시각
-    private int deliveryTime;              // 총 배달 소요 시간
-    private Location userLocation;           // 배달 주소
-    private int deliveryDistance = 8;      // 배달 거리(임의 지정)
-    private Order order;
-
+    private BlockingQueue<Integer> remainingDistanceQueue;  // 스레드 간 데이터 공유
+    private Order order;                    // 주문
+    private long orderId;                   // 주문 아이디
+    private Restaurant restaurant;          // 식당
+    private Customer customer;              // 고객
+    private OrderStatus orderStatus;        // 주문 상태
+    private String orderTimeStamp;          // 최초 주문 시각
+    private int deliveryTime;               // 총 배달 소요 시간
+    private Location userLocation;          // 배달 주소
+    private int remainingDistance = 0;
 
     // 생성자
-    public DeliveryRunnable(Order order) {
+    public DeliveryRunnable(BlockingQueue<Integer> remainingDistanceQueue, Order order) {
+        this.remainingDistanceQueue = remainingDistanceQueue;
         this.orderId = order.getOrderId();
         this.restaurant = order.getRestaurant();
         this.customer = order.getCustomer();
@@ -29,21 +33,22 @@ public class DeliveryRunnable implements Runnable{
         this.orderStatus = order.getOrderStatus();
         this.orderTimeStamp = order.getOrderTimeStamp();
         this.deliveryTime = restaurant.getRestaurantDeliveryTime();
-
         this.order = order;
     }
 
 
     // 메소드
+
+    // 큐에서 받은 위치 기준 업데이트 함수 필요 -> 별도의 클래스로 구현해야 하는가?
     @Override
     public void run() {
         order.updateOrderStatus();
         orderStatus = order.getOrderStatus();
 
         try {
-            while(deliveryDistance > -1) {
-
-                switch (deliveryDistance) {
+            while(remainingDistance > -1) {
+                remainingDistance = remainingDistanceQueue.take();
+                switch (remainingDistance) {
                     case 8:
                         System.out.printf("[%s]:  라이더 님이 출발했어요! 접수번호: %d%n", orderStatus, orderId);
                         System.out.printf("           %s에서 %s님이 계신 곳으로 배송 중입니다!%n", restaurant.getRestaurantLocation(), customer.getName());
@@ -56,7 +61,7 @@ public class DeliveryRunnable implements Runnable{
                         break;
                     case 2:
                         System.out.println("           라이더 님이 곧 도착해요!");
-                        System.out.println("           음식 수령을 위해 기다려주세요.");  // 순차적으로 나오는 이유 궁금
+                        System.out.println("           음식 수령을 위해 기다려주세요.");
                         break;
                     case 0:
                         order.updateOrderStatus();
@@ -67,13 +72,11 @@ public class DeliveryRunnable implements Runnable{
                         System.out.println("━━━━━━━━━━━━━━━━━⊱⊰━━━━━━━━━━━━━━━━");
                         break;
                 }
-                deliveryDistance -= 2;
-                Thread.sleep(2000);
             }
-        } catch (InterruptedException e) {
+        } catch (NullPointerException e) {
             System.out.println("[ERROR] 배달이 취소되었습니다.");
-        } catch (Exception e) {
-            System.out.println("오류가 발생했습니다: " + e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

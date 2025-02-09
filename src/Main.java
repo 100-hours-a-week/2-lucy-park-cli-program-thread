@@ -1,6 +1,7 @@
 import cart.Cart;
 import cart.CartItem;
 import delivery.DeliveryRunnable;
+import delivery.DriverRunnable;
 import delivery.PreparingRunnable;
 import location.Location;
 import order.Order;
@@ -13,6 +14,8 @@ import user.VIPCustomer;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static order.OrderType.배달;
 import static order.OrderType.포장;
@@ -25,7 +28,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         /// 식당1
-        Restaurant r1 = new Restaurant("맥도날드", new Location(new BigDecimal(37.5299), new BigDecimal(126.9644)),
+        Restaurant r1 = new Restaurant("맥도날드", new Location(new BigDecimal("37.5299"), new BigDecimal("126.9644")),
                                         "패스트푸트", 4.8, 3000,
                                         12000, 50, 20);
         List<Menu> r1MenuList = new ArrayList<>();
@@ -58,7 +61,7 @@ public class Main {
 
 
         ///  식당2
-        Restaurant r2 = new Restaurant("동대문 엽기떡볶이", new Location(new BigDecimal(37.5230), new BigDecimal(126.9803)),
+        Restaurant r2 = new Restaurant("동대문 엽기떡볶이", new Location(new BigDecimal("37.5230"), new BigDecimal("126.9803")),
                                         "분식", 4.5, 4000,
                                         15000, 70, 15);
 
@@ -185,9 +188,9 @@ public class Main {
                 System.out.println("주문하시겠습니까? 네  아니오");
                 String orderReply = sc.nextLine();
 
-                if (orderReply.equals("네")) {               ////////  에러 처리 필요
+                if (orderReply.equals("네")) {
                     while(true) {
-                        System.out.println("수령 방식을 선택해주세요: 배달   포장");    ///// 에러 처리 필요
+                        System.out.println("수령 방식을 선택해주세요: 배달   포장");
                         String orderType = sc.nextLine();
 
                         // 배달 주문
@@ -199,7 +202,6 @@ public class Main {
                             break;
                         } else {
                             System.out.println("잘못된 응답입니다. 다시 선택해주세요.");
-                            sc.nextLine();
                         }
                     }
 
@@ -221,8 +223,20 @@ public class Main {
             System.out.println("[ERROR] 주문이 취소되었습니다.");
         }
 
+        BlockingQueue<Location> locationQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<Integer> distanceQueue = new LinkedBlockingQueue<>();
+        try {
+            locationQueue.put(order.getRestaurant().getRestaurantLocation());
+            distanceQueue.put(8);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if(isPrepared && order.getOrderType() == 배달) {
-            Thread deliveryThread = new Thread(new DeliveryRunnable(order));
+            Thread driverThread = new Thread(new DriverRunnable(locationQueue, distanceQueue));
+            Thread deliveryThread = new Thread(new DeliveryRunnable(distanceQueue, order));
+
+            driverThread.start();
             deliveryThread.start();
         }
     }

@@ -16,4 +16,11 @@ public class Location {
     }
 
     // 메소드
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
 }
