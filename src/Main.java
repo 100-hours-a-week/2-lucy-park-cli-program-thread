@@ -9,6 +9,7 @@ import order.OrderStatus;
 import restaurant.Customization;
 import restaurant.Menu;
 import restaurant.Restaurant;
+import restaurant.RestaurantListManager;
 import user.Customer;
 import user.VIPCustomer;
 
@@ -25,12 +26,11 @@ import static user.UserStatus.일반;
 public class Main {
     public static void main(String[] args) {
         List<Restaurant> restaurantList = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
 
         /// 식당1
         Restaurant r1 = new Restaurant("맥도날드", new Location(new BigDecimal("37.5299"), new BigDecimal("126.9644")),
-                                        "패스트푸트", 4.8, 3000,
-                                        12000, 50, 20);
+                "패스트푸트", 4.8, 3000,
+                12000, 50, 20);
         List<Menu> r1MenuList = new ArrayList<>();
 
         // 사이드 메뉴 존재하는 메뉴
@@ -62,8 +62,8 @@ public class Main {
 
         ///  식당2
         Restaurant r2 = new Restaurant("동대문 엽기떡볶이", new Location(new BigDecimal("37.5230"), new BigDecimal("126.9803")),
-                                        "분식", 4.5, 4000,
-                                        15000, 70, 15);
+                "분식", 4.5, 4000,
+                15000, 70, 15);
 
         // 사이드 메뉴 없는 메뉴1
         List<Customization> r2Customizations = new ArrayList<>();
@@ -93,6 +93,16 @@ public class Main {
         r2.setMenus(r2MenuList);
 
         restaurantList.add(r2);
+
+        RestaurantListManager restaurantListManager = new RestaurantListManager(restaurantList);
+
+        runApplication(restaurantListManager);
+    }
+
+    public static void runApplication(RestaurantListManager restaurantListManager) {
+
+        List<Restaurant> restaurantList = restaurantListManager.getRestaurantList();
+        Scanner sc = new Scanner(System.in);
 
         // 로그인
         Customer customer = null;
@@ -165,7 +175,7 @@ public class Main {
 
                 if (cart == null) {
                     System.out.println("식당 조회 화면으로 되돌아 갑니다.");
-                    break;
+                    runApplication(restaurantListManager);
                 }
 
                 break;
@@ -176,7 +186,8 @@ public class Main {
         }
 
         Order order = null;
-        if(cart != null) {
+
+        while(true) {
             System.out.println("장바구니를 확인합니다.");
             System.out.println("━━━━━━━━━━━━━━⊱장바구니⊰━━━━━━━━━━━━━━");
             List<CartItem> cartItemList = cart.getCartItemList();
@@ -184,30 +195,61 @@ public class Main {
                 System.out.printf("%s %d%n", cartItem.getMenuItem().getItemName(), cartItem.getQuantity());
             }
             System.out.println("━━━━━━━━━━━━━━━━⊱⋆⊰━━━━━━━━━━━━━━━━");
-            while(true) {
-                System.out.println("주문하시겠습니까? 네  아니오");
-                String orderReply = sc.nextLine();
 
-                if (orderReply.equals("네")) {
-                    while(true) {
-                        System.out.println("수령 방식을 선택해주세요: 배달   포장");
-                        String orderType = sc.nextLine();
+            System.out.println("주문하시겠습니까? (네 / 아니오 / 뒤로 가기)");
+            String orderReply = sc.nextLine().trim();
 
-                        // 배달 주문
-                        if (orderType.equals("배달")) {
-                            order = customer.setDeliveryOrder(restaurant, cart, 배달, sc);
-                            break;
-                        } else if (orderType.equals("포장")) {
-                            order = customer.setTakeoutOrder(restaurant, cart, 포장);
-                            break;
-                        } else {
-                            System.out.println("잘못된 응답입니다. 다시 선택해주세요.");
-                        }
+            if (orderReply.equalsIgnoreCase("네")) {
+                while(true) {
+                    System.out.println("수령 방식을 선택해주세요: 배달   포장");
+                    String orderType = sc.nextLine().trim();
+
+                    if (orderType.equals("배달")) {
+                        order = customer.setDeliveryOrder(restaurant, cart, 배달, sc);
+                        break;
+                    } else if (orderType.equals("포장")) {
+                        order = customer.setTakeoutOrder(restaurant, cart, 포장);
+                        break;
+                    } else {
+                        System.out.println("잘못된 응답입니다. 다시 선택해주세요.");
                     }
-
                 }
+
+                // 만약 order가 null => 최소 금액 미달 등으로 주문 취소됨
+                if (order != null) {
+                    break;  // 주문이 성공적으로 생성되었으므로 반환
+                } else {
+                    System.out.println("[알림] 주문이 취소되었습니다. 장바구니 화면으로 돌아갑니다.");
+                }
+            }
+
+            else if (orderReply.equalsIgnoreCase("아니오")) {
+                System.out.println("추가 메뉴를 조회합니다.");
+
+
+                Cart newCart = customer.selectMenu(restaurant);
+                if (newCart != null && newCart.getCartItemList() != null) {
+                    cart.getCartItemList().addAll(newCart.getCartItemList());
+                    System.out.println("[알림] 장바구니에 메뉴가 추가되었습니다.");
+                } else {
+
+                    System.out.println("추가 메뉴 선택이 취소되었습니다.");
+                }
+            }
+
+            else if (orderReply.equalsIgnoreCase("뒤로 가기")) {
+                System.out.println("[알림] 주문을 종료하고 메인 화면으로 돌아갑니다.");
                 break;
             }
+
+            else {
+                System.out.println("잘못된 응답입니다. '네' 또는 '아니오' 또는 '뒤로 가기'만 입력 가능합니다.");
+            }
+        }
+
+        if (order == null) {
+            System.out.println("주문이 생성되지 않았습니다. 프로그램을 종료합니다.");
+            return;
         }
 
         boolean isPrepared = false;

@@ -99,7 +99,7 @@ public class Customer extends User{
 
         Cart cart = null;
         while(cart == null) {
-            System.out.printf("총 가격은 %d원입니다. 카트에 담으시겠습니까?: 네  아니오 %n", totalPrice);
+            System.out.printf("총 가격은 %d원입니다. 카트에 담으시겠습니까?: 네  뒤로 가기 %n", totalPrice);
 
             String reply = sc.nextLine().trim();
 
@@ -112,10 +112,9 @@ public class Customer extends User{
                 }
                 cart = new Cart(cartItemList);
                 break;
-            } else if (reply.equals("뒤로 가기") || reply.equals("아니오")) {
+            } else if (reply.equals("뒤로 가기")) {
                 System.out.println("처음 화면으로 돌아갑니다.");
-                cart = new Cart(null);
-                break;
+                return null;
             } else {
                 System.out.println("조건에 맞게 응답해주세요.");
             }
