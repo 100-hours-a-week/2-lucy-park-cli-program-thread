@@ -241,7 +241,7 @@ public class Main {
 
             else if (orderReply.equalsIgnoreCase("뒤로 가기")) {
                 System.out.println("[알림] 주문을 종료하고 메인 화면으로 돌아갑니다.");
-                break;
+                runApplication(customer, restaurantListManager);
             }
 
             else {
